@@ -1,7 +1,7 @@
 # Import javascript modules
 import imaplib
 import imghdr
-from js import THREE, window, document, Object
+from js import THREE, window, document, Object, console
 # Import pyscript / pyodide modules
 from pyodide.ffi import create_proxy, to_js
 # Import python module
@@ -243,9 +243,9 @@ def Apartement_1(number,living_room_size):
     pass
 
 #A2 = Single
-def Apartement_2(number):
+def Apartement_2(number,living_room_size):
     if number == 1:
-        variante(['V', 'H', 'H', 'H',0,0, 0, 0, 0],[floorsettings.ratio_1,floorsettings.ratio_2,floorsettings.ratio_3,floorsettings.ratio_4, 0,0,0,0,0])
+        variante(['V', 'H', 'H', 'H',0,0, 0, 0, 0],[living_room_size,1/2,1/3,1/2, 0,0,0,0,0])
     elif number == 2:
         variante(['H', 'V', 'H', 'H',0,0, 0, 0, 0],[floorsettings.ratio_1,floorsettings.ratio_2,floorsettings.ratio_3,floorsettings.ratio_4, 0,0,0,0,0])
     elif number == 3:
@@ -257,17 +257,17 @@ def Apartement_2(number):
     pass
 
 #A3 = Family
-def Apartement_3(number,ratios):
+def Apartement_3(number,living_room_size):
     if number == 1:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],[1/4*floorsettings.ratio_1, 1/2*floorsettings.ratio_2, 1/2*floorsettings.ratio_3, 0, 0, 0, 1/2*floorsettings.ratio_4, 0, 0])
+        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],[living_room_size, 1/2*floorsettings.ratio_2, 1/2*floorsettings.ratio_3, 0, 0, 0, 1/2*floorsettings.ratio_4, 0, 0])
     elif number == 2:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],ratios)
+        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],)
     elif number == 3:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],ratios)
+        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],)
     elif number == 4:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],ratios)
+        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],)
     elif number == 5:
-        variante(['V', 'V', 'H', 0, 0, 0, 'H', 0, 0],ratios)
+        variante(['V', 'V', 'H', 0, 0, 0, 'H', 0, 0],)
     pass
 
 # Apartment function
@@ -276,9 +276,9 @@ def Apartement(apartement_type, number,living_room_size):
     if apartement_type == 1:
         Apartement_1(number,living_room_size)
     elif apartement_type == 2:
-         Apartement_2(number)
+         Apartement_2(number,living_room_size)
     elif apartement_type == 3:
-         Apartement_3(number)
+         Apartement_3(number,living_room_size)
     pass
 
 #offset room outside function by changing the vertices
@@ -295,6 +295,7 @@ def offset_in(rooms, d):
         offset_room = define_room(room[0][0] + d , room[0][1] + d , room[1][0] - d , room[1][1] + d , room[2][0] - d , room [2][1] - d, room[3][0] + d, room[3][1] - d)
         offset_rooms.append(offset_room)
 
+#lists for update
 
 # extrude roomShapes
 def extrude(boundary, rooms):
@@ -415,27 +416,31 @@ def drawrooms(rooms):
 def update():
     global walls, room, floor_length_x, floor_length_y, floor_ratio_1, floor_ratio_2, floor_ratio_3, floor_ratio_4, floor_ratio_5, floor_ratio_6, final_rooms, lines, new_rooms, offset_rooms, shapes, room_sqaremeters, living_room_size
 
-    '''#get the value of type and value of Variant from the local storage
+    #get the value of type and value of Variant from the local storage
     apartment_type = window.localStorage.getItem("type")
     apartment_variant = window.localStorage.getItem("variant")
 
     #get the floor lenghts from the local storage
     floor_length_x = float(window.localStorage.getItem("apartementSize"))
-    floor_length_y = float(window.localStorage.getItem("apartemenSize"))
+    '''floor_length_y = float(window.localStorage.getItem("apartemenSize"))
     floor_ratio_1  = float(window.localStorage.getItem("livingroomSize"))
     floor_ratio_2  = float(window.localStorage.getItem("kitchenSize"))
     floor_ratio_3  = float(window.localStorage.getItem("bedroomSize"))
     floor_ratio_4  = float(window.localStorage.getItem("bathroomSize"))
-    floor_ratio_5  = float(window.localStorage.getItem("MasterbedroomSize"))
-    print(float(window.localStorage.getItem("apartementSize")))'''
+    floor_ratio_5  = float(window.localStorage.getItem("MasterbedroomSize"))'''
+   
+    test = float(document.getElementById("apartementSize_lenghtX").value)/100
+
+    console.log(test)
     
+
     #update functions for the floor lenghts
     if floorsettings.length_x != floor_length_x or floorsettings.length_y != floor_length_y:
         
         scene.remove(wall)
         scene.remove(floor)
         room = []
-        floor_length_x = floorsettings.length_x
+        floor_length_x = test
         floor_length_y = floorsettings.length_y
 
         final_rooms = []
@@ -444,6 +449,8 @@ def update():
         offset_rooms = []
         shapes = []
         room_sqaremeters = []
+
+        living_room_size = 0.3
 
         floor_ratio_1 = living_room_size
 
@@ -460,8 +467,10 @@ def update():
         extrude_floor(offset_room_out)
         scene.add(wall)
         scene.add(floor)
-    
-    elif  floorsettings.ratio_1 != floor_ratio_1 or floorsettings.ratio_2 != floor_ratio_2 or floorsettings.ratio_3 != floor_ratio_3 or floorsettings.ratio_4 != floor_ratio_4 or floorsettings.ratio_5 != floor_ratio_5 or floorsettings.ratio_6 != floor_ratio_6 or floorsettings.length_x != floor_length_x or floorsettings.length_y != floor_length_y:
+    else:
+        pass
+    #update ratios
+    if  floorsettings.ratio_1 != floor_ratio_1 or floorsettings.ratio_2 != floor_ratio_2 or floorsettings.ratio_3 != floor_ratio_3 or floorsettings.ratio_4 != floor_ratio_4 or floorsettings.ratio_5 != floor_ratio_5 or floorsettings.ratio_6 != floor_ratio_6:
         scene.remove(wall)
         scene.remove(floor)
         room = []
@@ -491,27 +500,57 @@ def update():
         extrude_floor(offset_room_out)
         scene.add(wall)
         scene.add(floor)
-        
-        #-----------------------
-        # Apartement variation functions
-        #A1 = Loft
-        '''def Apartement_1(number):
-            if number == 1:
-                variante(['V', 'H', 'H', 0, 0,0 ,0],[floorsettings.ratio_1,floorsettings.ratio_2, floorsettings.ratio_3, 0, 0, 0,0])
-            elif number == 2:
-                variante(['H', 'H', 'V', 0, 0,0 ,0],[floorsettings.ratio_1,floorsettings.ratio_2, floorsettings.ratio_3, 0, 0, 0,0])
-            elif number == 3:
-                variante(['V', 0,'H', 'H', 0, 0 ,0],[floorsettings.ratio_1,0,floorsettings.ratio_2, floorsettings.ratio_3, 0, 0,0])
-            elif number == 4:
-                variante(['V','H',0, 'H', 0, 0 ,0],[floorsettings.ratio_1,floorsettings.ratio_2,0, floorsettings.ratio_3, 0, 0,0])
-            pass'''
 
+        #------------------------apartment_type = 3
+    #apartment_variation = 1
+    else:
+        pass
+        #update type & variant
+    if  floorsettings.apartment_type != apartment_type or floorsettings.apartment_variation != apartment_variation:
+        scene.remove(wall)
+        scene.remove(floor)
+        room = []
+        final_rooms = []
+        lines = []
+        new_rooms = []
+        offset_rooms = []
+        shapes = []
+        room_sqaremeters = []
+        floor_ratio_1 = living_room_size = floorsettings.ratio_1
+        floor_ratio_2 = floorsettings.ratio_2
+        floor_ratio_3 = floorsettings.ratio_3
+        floor_ratio_4 = floorsettings.ratio_4
+        floor_ratio_5 = floorsettings.ratio_5
+        floor_ratio_6 = floorsettings.ratio_6
+    
+
+        update_room = define_room(0, 0, floorsettings.length_x, 0, floorsettings.length_x , floorsettings.length_y, 0, floorsettings.length_y)
+        new_rooms.append(update_room)
+
+        Apartement(floorsettings.apartment_type,floorsettings.apartment_variation,living_room_size)
+
+        offset_out(new_rooms[0], 0.2)
+        offset_in(final_rooms, 0.1)
+        
+        extrude(offset_room_out, offset_rooms)
+        extrude_floor(offset_room_out)
+        scene.add(wall)
+        scene.add(floor)
 
         #------------------------
     else:
         pass
 
         
+
+
+
+
+
+
+
+
+
 
         
 # Simple render and animate
@@ -560,5 +599,4 @@ def on_window_resize(event):
 #RUN THE MAIN PROGRAM
 if __name__=='__main__':
     main()
-
 

@@ -66,9 +66,14 @@
             window.localStorage.setItem("variant", element.value)
         }
 
-        function onChangeApartementSize() {
-            const element = document.getElementById("apartementSize")
-            window.localStorage.setItem("apartementSize", element.value)
+        function onChangeApartementSize_lengthX() {
+            const element = document.getElementById("apartementSize_lenghtX")
+            window.localStorage.setItem("apartementSize_lenghtX", element.value)
+        }
+
+        function onChangeApartementSize_lengthY() {
+            const element = document.getElementById("apartementSize_lenghtY")
+            window.localStorage.setItem("apartementSize_lenghtY", element.value)
         }
 
         function onChangeLivingroomSize() {
@@ -153,10 +158,35 @@
                                 </div>
                                 <div class="container">
                                         
+                                <div fs-rangeslider-step="1" fs-rangeslider-element="wrapper" fs-rangeslider-min="1"
+                                    fs-rangeslider-max="100" class="fs-rangeslider_wrapper">
+                                    <div class="text-block">Apartment size length X</div>
+                                    <input type="range" id="apartementSize_lenghtX" onchange="onChangeApartementSize_lengthX()" style="display: none;" />
+                                    <div fs-rangeslider-element="track" class="fs-rangeslider_track">
+                                        <div fs-rangeslider-element="fill" class="fs-rangeslider_fill"></div>
+                                        <div fs-rangeslider-element="handle" class="fs-rangeslider_handle"></div>
+                                    </div>
+                                    <div fs-rangeslider-element="display-value" class="fs-rangeslider_display-value">value meter 
+                                    </div>
+                                    <div class="w-form">
+                                        <form id="email-form" name="email-form" data-name="Email Form" method="get"><input
+                                                type="text" class="fs-rangeslider_input w-input" maxlength="256" name="name"
+                                                data-name="Name" placeholder="" id="range-slider-input" /><input type="text"
+                                                class="fs-rangeslider_input w-input" maxlength="256" name="name"
+                                                data-name="Name" placeholder="" id="range-slider-input" /></form>
+                                        <div class="w-form-done">
+                                            <div>Thank you! Your submission has been received!</div>
+                                        </div>
+                                        <div class="w-form-fail">
+                                            <div>Oops! Something went wrong while submitting the form.</div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div fs-rangeslider-step="0.01" fs-rangeslider-element="wrapper" fs-rangeslider-min="0.01"
                                     fs-rangeslider-max="1" class="fs-rangeslider_wrapper">
-                                    <div class="text-block">Apartment size</div>
-                                    <input type="range" id="apartementSize" onchange="onChangeApartementSize()" style="display: none;" />
+                                    <div class="text-block">Apartment size length Y</div>
+                                    <input type="range" id="apartementSize_lenghtY" onchange="onChangeApartementSize_lengthY()" style="display: none;" />
                                     <div fs-rangeslider-element="track" class="fs-rangeslider_track">
                                         <div fs-rangeslider-element="fill" class="fs-rangeslider_fill"></div>
                                         <div fs-rangeslider-element="handle" class="fs-rangeslider_handle"></div>
