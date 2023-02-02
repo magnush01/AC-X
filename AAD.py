@@ -79,10 +79,10 @@ def main():
     global floorsettings, apartment_type, apartment_variation, floor_length_x, floor_length_y, floor_ratio_1, floor_ratio_2, floor_ratio_3, floor_ratio_4,floor_ratio_5, floor_ratio_6
 
     #-----------------------------------------------------------------------
-    apartment_type = 1
+    apartment_type = 3
     apartment_variation = 1
-    floor_length_x = 10
-    floor_length_y = 10
+    floor_length_x = 14
+    floor_length_y = 12
     
     floor_ratio_1 = 1/2
     floor_ratio_2 = 1/2
