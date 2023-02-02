@@ -493,14 +493,15 @@ def update():
 
     
 
+   
     #-----------------------------------------------------------------------------------
      #-----------------------------------------------------------------------------------
     #GET THE VALUES FROM THE LOCAL STORAGE
     #get the value of type and value of Variant from the local storage
-    global test1, test2, test3, test4, test5, test6, test7, vtest
+    global test1, test2, test3, test4, test5, test6, test7
 
-    apartment_type = float(window.localStorage.getItem("type"))
-    apartment_variant = window.localStorage.getItem("Variant")
+    '''apartment_type = (window.localStorage.getItem("type"))
+    apartment_variant = window.localStorage.getItem("Variant")'''
 
     '''vtest = float(document.getElementById("type")).value
     vtest2 = window.localStorage.getItem("Variant")'''
@@ -524,16 +525,8 @@ def update():
     test7 = float(document.getElementById("MasterbedroomSize").value)/100
 
 
-    generateButton = window.localStorage.getItem("generateButton")
-
-    console.log("generateButton: ", generateButton)
-
-    generateButton = document.getElementById("generate-button");
-    
 
 
-    
-    
 
 
 
