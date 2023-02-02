@@ -1,7 +1,7 @@
 # Import javascript modules
 import imaplib
 import imghdr
-from js import THREE, window, document, Object, console
+from js import THREE, window, document, Object
 # Import pyscript / pyodide modules
 from pyodide.ffi import create_proxy, to_js
 # Import python module
@@ -78,6 +78,7 @@ def main():
     # Set up GUI
     global floorsettings, apartment_type, apartment_variation, floor_length_x, floor_length_y, floor_ratio_1, floor_ratio_2, floor_ratio_3, floor_ratio_4,floor_ratio_5, floor_ratio_6
 
+    #-----------------------------------------------------------------------
     apartment_type = 1
     apartment_variation = 1
     floor_length_x = 10
@@ -115,12 +116,12 @@ def main():
     param_folder.add(floorsettings,'length_y', 1,20)
 
     param_folder = gui.addFolder('Ratios')
-    param_folder.add(floorsettings,'ratio_1', 0.2,1)
-    param_folder.add(floorsettings,'ratio_2', 0.2,1)
-    param_folder.add(floorsettings,'ratio_3', 0.2,1)
-    param_folder.add(floorsettings,'ratio_4', 0.2,1)
-    param_folder.add(floorsettings,'ratio_5', 0.2,1)
-    param_folder.add(floorsettings,'ratio_6', 0.2,1)
+    param_folder.add(floorsettings,'ratio_1', 0.2,0.8)
+    param_folder.add(floorsettings,'ratio_2', 0.2,0.8)
+    param_folder.add(floorsettings,'ratio_3', 0.2,0.8)
+    param_folder.add(floorsettings,'ratio_4', 0.2,0.8)
+    param_folder.add(floorsettings,'ratio_5', 0.2,0.8)
+    param_folder.add(floorsettings,'ratio_6', 0.2,0.8)
     
     '''param_folder.open()'''
 
@@ -156,14 +157,14 @@ def main():
 
     # Impliment 
     # Original room
-    firstroom = define_room(0, 0, floorsettings.length_x, 0, floorsettings.length_x , floorsettings.length_y, 0, floorsettings.length_y)
+    firstroom = define_room(0, 0, floor_length_x, 0, floor_length_x , floor_length_y, 0, floor_length_y)
     new_rooms.append(firstroom)
 
-    living_room_size= 1/4
-
+    
+    
     
     #Apartements
-    Apartement(floorsettings.apartment_type,floorsettings.apartment_variation,living_room_size)
+    Apartement(floorsettings.apartment_type,floorsettings.apartment_variation)
    
     
     #offset rooms for Wall vertices
@@ -226,61 +227,135 @@ def variante(syntax, ratios):
             pass
             final_rooms.append(new_rooms[index])
 
-#Ratios
 
-
+#--------------------------
 # Apartement variation functions
-#A1 = Loft
-def Apartement_1(number,living_room_size):
+#A1 = Loft Default
+def Apartement_1(number):
     if number == 1:
-        variante(['V', 'H', 'H', 0, 0,0 ,0],[living_room_size,1/2, 1/4, 0, 0, 0,0])
+        variante(['V', 'H', 'H', 0, 0,0 ,0],[1/3, 1/2, 1/2, 0, 0, 0,0])
     elif number == 2:
-        variante(['H', 'H', 'V', 0, 0,0 ,0],[1/3,1/2, 1/4, 0, 0, 0,0])
+        variante(['H', 'H', 'V', 0, 0,0 ,0],[1/2, 1/8, 1/4, 0, 0, 0,0])
     elif number == 3:
-        variante(['V', 0,'H', 'H', 0, 0 ,0],[1/2,0,1/4, 1/2, 0, 0,0])
+        variante(['V', 0,'H', 'H', 0, 0 ,0],[1/6,0,1/2, 1/2, 0, 0,0])
     elif number == 4:
-        variante(['V','H',0, 'H', 0, 0 ,0],[1/2,1/4,0, 1/3, 0, 0,0])
+        variante(['V','H',0, 'H', 0, 0 ,0],[1/2, 1/2,0, 1/7, 0, 0,0])
     pass
 
-#A2 = Single
-def Apartement_2(number,living_room_size):
+#A1 = Loft GUI
+def Apartement_1_GUI(number):
     if number == 1:
-        variante(['V', 'H', 'H', 'H',0,0, 0, 0, 0],[living_room_size,1/2,1/3,1/2, 0,0,0,0,0])
+        variante(['V', 'H', 'H', 0, 0,0 ,0],[test3, test4, test5, 0, 0, 0,0])
     elif number == 2:
-        variante(['H', 'V', 'H', 'H',0,0, 0, 0, 0],[floorsettings.ratio_1,floorsettings.ratio_2,floorsettings.ratio_3,floorsettings.ratio_4, 0,0,0,0,0])
+        variante(['H', 'H', 'V', 0, 0,0 ,0],[test3, test4, test5, 0, 0, 0,0])
     elif number == 3:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0])
+        variante(['V', 0,'H', 'H', 0, 0 ,0],[test3,0,test4, test5, 0, 0,0])
     elif number == 4:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0])
-    elif number == 5:
-        variante(['V', 'V', 'H', 0, 0, 0, 'H', 0, 0])
+        variante(['V','H',0, 'H', 0, 0 ,0],[test3, test4,0, 1/7, 0, 0,0])
     pass
 
-#A3 = Family
-def Apartement_3(number,living_room_size):
+#  --------------------------
+
+#A2 = Single Default
+def Apartement_2(number):
     if number == 1:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],[living_room_size, 1/2*floorsettings.ratio_2, 1/2*floorsettings.ratio_3, 0, 0, 0, 1/2*floorsettings.ratio_4, 0, 0])
+        variante(['V', 'H', 'H', 'V',0,0, 0, 0, 0],[1/2,1/2,1/3,1/2, 0,0,0,0,0])
     elif number == 2:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],)
+        variante(['H', 'V', 'H', 'H',0,0, 0, 0, 0],[1/2,1/2,1/3,1/2, 0,0,0,0,0])
     elif number == 3:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],)
+        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],[1/2,1/2,1/3,0,0,0, 1/5,0,0])
     elif number == 4:
-        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],)
-    elif number == 5:
-        variante(['V', 'V', 'H', 0, 0, 0, 'H', 0, 0],)
+        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],[1/4,1/2,1/3,0,0,0, 1/2,0,0])
     pass
 
-# Apartment function
-def Apartement(apartement_type, number,living_room_size):
 
-    if apartement_type == 1:
-        Apartement_1(number,living_room_size)
-    elif apartement_type == 2:
-         Apartement_2(number,living_room_size)
-    elif apartement_type == 3:
-         Apartement_3(number,living_room_size)
+#A2 = Single GUI
+def Apartement_2_GUI(number):
+    if number == 1:
+        variante(['V', 'H', 'H', 'H',0,0, 0, 0, 0],[test3, test4,test5, test6, 0,0,0,0,0])
+    elif number == 2:
+        variante(['H', 'V', 'H', 'H',0,0, 0, 0, 0],[test3,test4,test5,test6, 0,0,0,0,0])
+    elif number == 3:
+        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],[test3,test4,test5,0,0,0,test6,0,0])
+    elif number == 4:
+        variante(['V', 'V', 'V', 0, 0, 0, 'V', 0, 0],[test3,test4,test5,0,0,0,test6,0,0])
     pass
 
+
+#--------------------------
+#A3 = Family Default
+def Apartement_3(number):
+    if number == 1:
+        variante(['H', 'V', 'H', 0, 0, 0, 'V', 0, 0],[1/3,1/2,1/3, 0,0,0,1/2,0,0])
+    elif number == 2:
+        variante(['V', 'H', 'V', 0, 0, 0, 'V', 0, 0],[1/3,1/2,1/3, 0,0,0,1/2,0,0])
+    elif number == 3:
+        variante(['V', 'V', 'H', 0, 0, 0, 'H', 0, 0],[1/6,1/2,1/3, 0,0,0,1/2,0,0])
+    elif number == 4:
+        variante(['H', 'H', 'V', 0, 0, 0, 'H', 0, 0],[1/3,1/2,1/3, 0,0,0,1/2,0,0])
+    pass
+
+#A3 = Family GUI
+def Apartement_3_GUI(number):
+    if number == 1:
+        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],[test3, test4, test5, 0, 0, 0, test6, 0, 0])
+    elif number == 2:
+        variante(['V', 'H', 'V', 0, 0, 0, 'H', 0, 0],[test3, test4, test5, 0, 0, 0, test6, 0, 0])
+    elif number == 3:
+        variante(['H', 'H', 'H', 0, 0, 0, 'V', 0, 0],[test3, test4, test5, 0, 0, 0, test6, 0, 0])
+    elif number == 4:
+        variante(['V', 'V', 'V', 0, 0, 0, 'H', 0, 0],[test3, test4, test5, 0, 0, 0, test6, 0, 0])
+    pass
+
+
+
+
+
+#--------------------------
+
+# Apartment function Default
+def Apartement(type, number):
+
+    if type == 1:
+        Apartement_1(number)
+    elif type == 2:
+         Apartement_2(number)
+    elif type == 3:
+         Apartement_3(number)
+    pass
+
+# Apartment function GUI
+def Apartement_GUI(type, number):
+
+    if type == 1:
+        Apartement_1_GUI(number)
+    elif type == 2:
+         Apartement_2_GUI(number)
+    elif type == 3:
+         Apartement_3_GUI(number)
+    pass
+
+#randomize syntax
+import random
+
+def randomize_syntax():
+    syntax = []
+    for i in range(7):
+        random_number = random.random()
+        if random_number < 0.33:
+            syntax.append("V")
+        elif random_number < 0.67:
+            syntax.append("H")
+        else:
+            syntax.append(0)
+    return syntax
+
+syntax = randomize_syntax()
+
+
+
+
+#--------------------------
 #offset room outside function by changing the vertices
 def offset_out(room, d):
     global new_rooms, offset_room_out
@@ -414,34 +489,189 @@ def drawrooms(rooms):
 
 # update
 def update():
-    global walls, room, floor_length_x, floor_length_y, floor_ratio_1, floor_ratio_2, floor_ratio_3, floor_ratio_4, floor_ratio_5, floor_ratio_6, final_rooms, lines, new_rooms, offset_rooms, shapes, room_sqaremeters, living_room_size
+    global  wall, room, floor_length_x, floor_length_y, final_rooms, lines, new_rooms, offset_rooms, shapes, room_sqaremeters, floor_ratio_1, floor_ratio_2, floor_ratio_3, floor_ratio_4, floor_ratio_5, floor_ratio_6
 
-    #get the value of type and value of Variant from the local storage
-    apartment_type = window.localStorage.getItem("type")
-    apartment_variant = window.localStorage.getItem("variant")
-
-    #get the floor lenghts from the local storage
-    floor_length_x = float(window.localStorage.getItem("apartementSize"))
-    '''floor_length_y = float(window.localStorage.getItem("apartemenSize"))
-    floor_ratio_1  = float(window.localStorage.getItem("livingroomSize"))
-    floor_ratio_2  = float(window.localStorage.getItem("kitchenSize"))
-    floor_ratio_3  = float(window.localStorage.getItem("bedroomSize"))
-    floor_ratio_4  = float(window.localStorage.getItem("bathroomSize"))
-    floor_ratio_5  = float(window.localStorage.getItem("MasterbedroomSize"))'''
-   
-    test = float(document.getElementById("apartementSize_lenghtX").value)/100
-
-    console.log(test)
     
 
-    #update functions for the floor lenghts
-    if floorsettings.length_x != floor_length_x or floorsettings.length_y != floor_length_y:
+    #-----------------------------------------------------------------------------------
+     #-----------------------------------------------------------------------------------
+    #GET THE VALUES FROM THE LOCAL STORAGE
+    #get the value of type and value of Variant from the local storage
+    global test1, test2, test3, test4, test5, test6, test7, vtest
+
+    apartment_type = float(window.localStorage.getItem("type"))
+    apartment_variant = window.localStorage.getItem("Variant")
+
+    '''vtest = float(document.getElementById("type")).value
+    vtest2 = window.localStorage.getItem("Variant")'''
+
+
+    #get the floor lenghts from the local storage
+    G_floor_length_x = float(window.localStorage.getItem("apartementSize_lenghtX"))
+    floor_length_y = float(window.localStorage.getItem("apartementSize_lenghtY"))
+    floor_ratio_1  = float(window.localStorage.getItem("livingroomSize"))
+    floor_ratio_2  = float(window.localStorage.getItem("KitchenSize"))
+    floor_ratio_3  = float(window.localStorage.getItem("BedroomSize"))
+    floor_ratio_4  = float(window.localStorage.getItem("BathroomSize"))
+    floor_ratio_5  = float(window.localStorage.getItem("MasterbedroomSize"))
+    
+    test1 = float(document.getElementById("apartementSize_lenghtX").value)
+    test2 = float(document.getElementById("apartementSize_lenghtY").value)
+    test3 = float(document.getElementById("livingroomSize").value)/100
+    test4 = float(document.getElementById("KitchenSize").value)/100
+    test5 = float(document.getElementById("BedroomSize").value)/100
+    test6 = float(document.getElementById("BathroomSize").value)/100
+    test7 = float(document.getElementById("MasterbedroomSize").value)/100
+
+
+    generateButton = window.localStorage.getItem("generateButton")
+
+    console.log("generateButton: ", generateButton)
+
+    generateButton = document.getElementById("generate-button");
+    
+
+
+    
+    
+
+
+
+     #-----------------------------------------------------------------------------------
+    #-----------------------------------------------------------------------------------
+
+
+    #update type
+    if  floorsettings.apartment_type != apartment_type or floorsettings.apartment_variation != apartment_variation or test1 != floor_length_x or test2 != floor_length_y:
         
         scene.remove(wall)
         scene.remove(floor)
         room = []
-        floor_length_x = test
-        floor_length_y = floorsettings.length_y
+        final_rooms = []
+        lines = []
+        new_rooms = []
+        offset_rooms = []
+        shapes = []
+        room_sqaremeters = []
+    
+
+        update_room = define_room(0, 0, test1, 0, test1 , test2, 0, test2)
+        new_rooms.append(update_room)
+        
+        Apartement(floorsettings.apartment_type,floorsettings.apartment_variation)
+        
+        offset_out(new_rooms[0], 0.2)
+        offset_in(final_rooms, 0.1)
+        
+        extrude(offset_room_out, offset_rooms)
+        extrude_floor(offset_room_out)
+        scene.add(wall)
+        scene.add(floor)
+
+    else:
+        pass
+
+
+        #now update the ratios
+    if test3 != floor_ratio_1 or test4 != floor_ratio_2 or test5 != floor_ratio_3 or test6 != floor_ratio_4 or test7 != floor_ratio_5 or floorsettings.ratio_6 != floor_ratio_6:
+        
+        scene.remove(wall)
+        scene.remove(floor)
+        room = []
+        final_rooms = []
+        lines = []
+        new_rooms = []
+        offset_rooms = []
+        shapes = []
+        room_sqaremeters = []
+
+    
+
+        update_room = define_room(0, 0, test1, 0, test1 , test2, 0, test2)
+        new_rooms.append(update_room)
+
+        Apartement_GUI(floorsettings.apartment_type,floorsettings.apartment_variation)
+
+        offset_out(new_rooms[0], 0.2)
+        offset_in(final_rooms, 0.1)
+        
+        extrude(offset_room_out, offset_rooms)
+        extrude_floor(offset_room_out)
+        scene.add(wall)
+        scene.add(floor)
+
+    else:
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    '''    #update Variant
+    if  floorsettings.apartment_variation != apartment_variation:
+        scene.remove(wall)
+        scene.remove(floor)
+        room = []
+        final_rooms = []
+        lines = []
+        new_rooms = []
+        offset_rooms = []
+        shapes = []
+        room_sqaremeters = []
+    
+
+        update_room = define_room(0, 0, test1, 0, test1 , test2, 0, test2)
+        new_rooms.append(update_room)
+
+    
+    
+        
+        Apartement_GUI(floorsettings.apartment_type,floorsettings.apartment_variation)
+        
+        offset_out(new_rooms[0], 0.2)
+        offset_in(final_rooms, 0.1)
+        
+        extrude(offset_room_out, offset_rooms)
+        extrude_floor(offset_room_out)
+        scene.add(wall)
+        scene.add(floor)
+
+        
+    else:
+        pass
+
+    
+    #update functions for the floor lenghts
+    if test1 != floor_length_x or test2 != floor_length_y:
+        
+        scene.remove(wall)
+        scene.remove(floor)
+        room = []
+        floor_length_x = test1
+        floor_length_y = test2
 
         final_rooms = []
         lines = []
@@ -450,15 +680,13 @@ def update():
         shapes = []
         room_sqaremeters = []
 
-        living_room_size = 0.3
-
-        floor_ratio_1 = living_room_size
+        
 
 
-        update_room = define_room(0, 0, floorsettings.length_x, 0, floorsettings.length_x , floorsettings.length_y, 0, floorsettings.length_y)
+        update_room = define_room(0, 0, test1, 0, test1 , test2, 0, test2)
         new_rooms.append(update_room)
 
-        Apartement(floorsettings.apartment_type,floorsettings.apartment_variation,living_room_size)
+        Apartement(floorsettings.apartment_type,floorsettings.apartment_variation,r_living_room_size,r_kitchen_size,r_Bedroom_size,r_bathroom_size,r_Masterbedroom_size)
 
         offset_out(new_rooms[0], 0.2)
         offset_in(final_rooms, 0.1)
@@ -470,7 +698,7 @@ def update():
     else:
         pass
     #update ratios
-    if  floorsettings.ratio_1 != floor_ratio_1 or floorsettings.ratio_2 != floor_ratio_2 or floorsettings.ratio_3 != floor_ratio_3 or floorsettings.ratio_4 != floor_ratio_4 or floorsettings.ratio_5 != floor_ratio_5 or floorsettings.ratio_6 != floor_ratio_6:
+    if  test3 != floor_ratio_1 or test4 != floor_ratio_2 or test5 != floor_ratio_3 or test6 != floor_ratio_4 or test7 != floor_ratio_5 or floorsettings.ratio_6 != floor_ratio_6:
         scene.remove(wall)
         scene.remove(floor)
         room = []
@@ -480,18 +708,19 @@ def update():
         offset_rooms = []
         shapes = []
         room_sqaremeters = []
-        floor_ratio_1 = living_room_size = floorsettings.ratio_1
-        floor_ratio_2 = floorsettings.ratio_2
-        floor_ratio_3 = floorsettings.ratio_3
-        floor_ratio_4 = floorsettings.ratio_4
-        floor_ratio_5 = floorsettings.ratio_5
-        floor_ratio_6 = floorsettings.ratio_6
+
+
+        floor_ratio_1 = r_living_room_size = test3
+        floor_ratio_2 = r_kitchen_size = test4
+        floor_ratio_3 = r_Bedroom_size = test5
+        floor_ratio_4 = r_bathroom_size = test6
+        floor_ratio_5 = r_Masterbedroom_size = test7
     
 
-        update_room = define_room(0, 0, floorsettings.length_x, 0, floorsettings.length_x , floorsettings.length_y, 0, floorsettings.length_y)
+        update_room = define_room(0, 0, test1, 0, test1 , test2, 0, test2)
         new_rooms.append(update_room)
 
-        Apartement(floorsettings.apartment_type,floorsettings.apartment_variation,living_room_size)
+        Apartement(floorsettings.apartment_type,floorsettings.apartment_variation,r_living_room_size,r_kitchen_size,r_Bedroom_size,r_bathroom_size,r_Masterbedroom_size)
 
         offset_out(new_rooms[0], 0.2)
         offset_in(final_rooms, 0.1)
@@ -504,42 +733,8 @@ def update():
         #------------------------apartment_type = 3
     #apartment_variation = 1
     else:
-        pass
-        #update type & variant
-    if  floorsettings.apartment_type != apartment_type or floorsettings.apartment_variation != apartment_variation:
-        scene.remove(wall)
-        scene.remove(floor)
-        room = []
-        final_rooms = []
-        lines = []
-        new_rooms = []
-        offset_rooms = []
-        shapes = []
-        room_sqaremeters = []
-        floor_ratio_1 = living_room_size = floorsettings.ratio_1
-        floor_ratio_2 = floorsettings.ratio_2
-        floor_ratio_3 = floorsettings.ratio_3
-        floor_ratio_4 = floorsettings.ratio_4
-        floor_ratio_5 = floorsettings.ratio_5
-        floor_ratio_6 = floorsettings.ratio_6
-    
+        pass'''
 
-        update_room = define_room(0, 0, floorsettings.length_x, 0, floorsettings.length_x , floorsettings.length_y, 0, floorsettings.length_y)
-        new_rooms.append(update_room)
-
-        Apartement(floorsettings.apartment_type,floorsettings.apartment_variation,living_room_size)
-
-        offset_out(new_rooms[0], 0.2)
-        offset_in(final_rooms, 0.1)
-        
-        extrude(offset_room_out, offset_rooms)
-        extrude_floor(offset_room_out)
-        scene.add(wall)
-        scene.add(floor)
-
-        #------------------------
-    else:
-        pass
 
         
 
@@ -599,4 +794,5 @@ def on_window_resize(event):
 #RUN THE MAIN PROGRAM
 if __name__=='__main__':
     main()
+
 
