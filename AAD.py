@@ -286,7 +286,7 @@ def Apartement_2_GUI(number):
 #A3 = Family Default
 def Apartement_3(number):
     if number == 1:
-        variante(['H', 'V', 'H', 0, 0, 0, 'V', 0, 0],[1/3,1/2,1/3, 0,0,0,1/2,0,0])
+        variante(['H', 'V', 'H', 0, 0, 0, 'V', 0, 0],[2/3,1/2,1/3, 0,0,0,1/2,0,0])
     elif number == 2:
         variante(['V', 'H', 'V', 0, 0, 0, 'V', 0, 0],[1/3,1/2,1/3, 0,0,0,1/2,0,0])
     elif number == 3:
